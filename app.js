@@ -19,7 +19,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://0.0.0.0:27017/moviedb', {
+mongoose.connect('mongodb://127.0.0.1:27017/moviedb', {
   useNewUrlParser: true,
 
   useUnifiedTopology: true,
