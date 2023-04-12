@@ -21,9 +21,10 @@ movieRouter.post(
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
       thumbnail: Joi.string().required().pattern(regEx.link),
+      movieId: Joi.number().required(),
     }),
   }),
-  createMovie,
+  createMovie
 );
 
 movieRouter.delete(
@@ -35,7 +36,7 @@ movieRouter.delete(
     }),
   }),
 
-  deleteMovie,
+  deleteMovie
 );
 
 module.exports = movieRouter;

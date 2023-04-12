@@ -22,7 +22,7 @@ const movieSchema = new mongoose.Schema({
 
   owner: { required: true, type: mongoose.Schema.Types.ObjectId, ref: 'user' },
 
-  // movieId: { required: true, type: Number },
+  movieId: { required: true, type: Number },
 
   nameRU: { type: String, required: true },
 

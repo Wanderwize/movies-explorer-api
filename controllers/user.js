@@ -16,17 +16,20 @@ module.exports.getCurrentUser = (req, res, next) => {
 };
 
 module.exports.updateProfile = (req, res, next) => {
+  const userId = req.user._id;
   const { name, email } = req.body;
-  User.findByIdAndUpdate(
-    req.user._id,
+  User.findOneAndUpdate(
+    { _id: userId, email: { $ne: email } },
     { name, email },
-    { new: true, runValidators: true },
+    { new: true, runValidators: true }
   )
-    .orFail(new NotFoundError('Пользователь не найден'))
+    .orFail(new NotUniqueError('Необходимо изменить Email'))
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError('Ошибка валидации'));
+      } else if (err.name === 'NotFoundError') {
+        next(new NotFoundError('Пользователь не найден'));
       } else {
         next(err);
       }
@@ -38,11 +41,13 @@ module.exports.createUser = (req, res, next) => {
 
   bcrypt
     .hash(req.body.password, 10)
-    .then((hash) => User.create({
-      name,
-      email,
-      password: hash,
-    }))
+    .then((hash) =>
+      User.create({
+        name,
+        email,
+        password: hash,
+      })
+    )
     .then((user) => {
       res.send({
         email: user.email,
@@ -70,7 +75,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'
       );
       res.status(200).send({ token });
     })
