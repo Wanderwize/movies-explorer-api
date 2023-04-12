@@ -11,7 +11,6 @@ const NotFoundError = require('./errors/notFoundError');
 const userRouter = require('./routes/user');
 const movieRouter = require('./routes/movie');
 const { login, createUser } = require('./controllers/user');
-const regEx = require('./utils/regex');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./errors/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -48,8 +47,6 @@ app.post(
       email: Joi.string().required().email(),
       password: Joi.string().required().min(8),
       name: Joi.string().min(2).max(30),
-      about: Joi.string().min(2).max(30),
-      avatar: Joi.string().pattern(regEx.link),
     }),
   }),
   createUser,

@@ -28,14 +28,14 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     .then((user) => {
       if (!user) {
         return Promise.reject(
-          new AuthorizationError('Требуется авторизация'),
+          new AuthorizationError('Неправильные почта или пароль'),
         );
       }
 
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           return Promise.reject(
-            new AuthorizationError('Требуется авторизация'),
+            new AuthorizationError('Неправильные почта или пароль'),
           );
         }
         return user;
