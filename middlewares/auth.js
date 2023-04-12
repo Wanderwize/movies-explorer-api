@@ -3,7 +3,7 @@ const AuthorizationError = require('../errors/authoriztionError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 const handleAuthError = () => {
-  throw new AuthorizationError('Неправильные почта или пароль');
+  throw new AuthorizationError('Требуется авторизация');
 };
 
 const extractBearerToken = (header) => header.replace('Bearer ', '');
