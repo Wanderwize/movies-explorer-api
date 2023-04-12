@@ -3,10 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 const auth = require('../middlewares/auth');
 
 const {
-  getUser,
-  getUsers,
   updateProfile,
-  updateAvatar,
   getCurrentUser,
 } = require('../controllers/user');
 

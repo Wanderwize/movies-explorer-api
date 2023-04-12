@@ -1,11 +1,6 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-
 const Movie = require('../models/movie');
-
 const NotFoundError = require('../errors/notFoundError');
 const ValidationError = require('../errors/validationError');
-const NotUniqueError = require('../errors/NotUniqueError');
 const NotEnoughRightsError = require('../errors/NotEnoughRightsError');
 
 module.exports.getMovies = (req, res, next) => {

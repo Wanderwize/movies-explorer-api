@@ -23,7 +23,7 @@ movieRouter.post(
       thumbnail: Joi.string().required().pattern(regEx.link),
     }),
   }),
-  createMovie
+  createMovie,
 );
 
 movieRouter.delete(
@@ -35,7 +35,7 @@ movieRouter.delete(
     }),
   }),
 
-  deleteMovie
+  deleteMovie,
 );
 
 module.exports = movieRouter;
