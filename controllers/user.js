@@ -21,7 +21,7 @@ module.exports.updateProfile = (req, res, next) => {
   User.findOneAndUpdate(
     { _id: userId, email: { $ne: email } },
     { name, email },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   )
     .orFail(new NotUniqueError('Необходимо изменить Email'))
     .then((user) => res.send(user))
@@ -30,6 +30,8 @@ module.exports.updateProfile = (req, res, next) => {
         next(new ValidationError('Ошибка валидации'));
       } else if (err.name === 'NotFoundError') {
         next(new NotFoundError('Пользователь не найден'));
+      } else if (err.code === 11000) {
+        next(new NotUniqueError('Email уже зарегистрирован'));
       } else {
         next(err);
       }
@@ -41,13 +43,11 @@ module.exports.createUser = (req, res, next) => {
 
   bcrypt
     .hash(req.body.password, 10)
-    .then((hash) =>
-      User.create({
-        name,
-        email,
-        password: hash,
-      })
-    )
+    .then((hash) => User.create({
+      name,
+      email,
+      password: hash,
+    }))
     .then((user) => {
       res.send({
         email: user.email,
@@ -75,7 +75,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
       );
       res.status(200).send({ token });
     })

@@ -18,11 +18,17 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://127.0.0.1:27017/moviedb', {
-  useNewUrlParser: true,
-
-  useUnifiedTopology: true,
-});
+if (process.env.NODE_ENV === 'production') {
+  mongoose.connect(process.env.DB_ADRESS, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+} else {
+  mongoose.connect('mongodb://127.0.0.1:27017/moviedb', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+}
 
 app.use(express.json());
 app.use(cors());
@@ -35,7 +41,7 @@ app.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
-      password: Joi.string().required().min(8),
+      password: Joi.string().required(),
     }),
   }),
   login,
@@ -45,8 +51,8 @@ app.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
-      password: Joi.string().required().min(8),
-      name: Joi.string().min(2).max(30),
+      password: Joi.string().required(),
+      name: Joi.string().required().min(2).max(30),
     }),
   }),
   createUser,

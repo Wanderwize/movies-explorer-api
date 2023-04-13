@@ -24,7 +24,7 @@ movieRouter.post(
       movieId: Joi.number().required(),
     }),
   }),
-  createMovie
+  createMovie,
 );
 
 movieRouter.delete(
@@ -36,7 +36,7 @@ movieRouter.delete(
     }),
   }),
 
-  deleteMovie
+  deleteMovie,
 );
 
 module.exports = movieRouter;

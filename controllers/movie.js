@@ -4,7 +4,8 @@ const ValidationError = require('../errors/validationError');
 const NotEnoughRightsError = require('../errors/NotEnoughRightsError');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((movie) => res.send(movie))
     .catch(next);
 };
